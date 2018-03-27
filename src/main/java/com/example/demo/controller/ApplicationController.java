@@ -49,7 +49,7 @@ public class ApplicationController {
 		return new ResponseEntity<String>(processedText, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/analyzedMessage", method = RequestMethod.POST)
+	@RequestMapping(value = "/analyzedMessage2", method = RequestMethod.POST)
 	public ResponseEntity<String> getAnalyzedMessage(@RequestBody UnprocessedText unprocessedText) {
 
 		String processedText = sbService.getAnalyzedData(unprocessedText);
@@ -59,7 +59,7 @@ public class ApplicationController {
 	
 	
 	@RequestMapping(value = "/congnitiveProfile", method = RequestMethod.POST)
-	public ResponseEntity<String> createCognitiveProfile(@RequestBody ContentRequest[] contentRequests) throws IOException, InterruptedException {
+	public ResponseEntity<String> createCognitiveProfile(@RequestBody ContentRequest[] contentRequests) throws Exception {
 
 		String resposne = "We have received request and processing it";
 		System.out.println("Inside cognitiveProfile Method");

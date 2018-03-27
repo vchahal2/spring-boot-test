@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.io.IOException;
 import java.util.Base64;
 
 import org.slf4j.Logger;
@@ -13,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.messaging.TopicPublisher;
+import com.example.demo.messaging.TopicSubscriber;
 import com.example.demo.pojo.AnalyzedText;
+import com.example.demo.pojo.ContentRequest;
 import com.example.demo.pojo.UnprocessedText;
 import com.example.demo.util.WatsonUtil;
 
@@ -25,8 +29,14 @@ public class SbServiceImpl implements SbService{
 	@Autowired
 	WatsonUtil watsonUtil;
 	
+	/*@Autowired
+	RestTemplate restTemplate;*/
+	
 	@Autowired
-	RestTemplate restTemplate;
+	TopicSubscriber topicSubscriber;
+	
+	@Autowired
+	TopicPublisher topicPublisher;
 	
 	@Value("${watson.nlu.api.url}")
 	private String watsonNLUAPIUrl;
@@ -46,8 +56,9 @@ public class SbServiceImpl implements SbService{
 		
 		HttpEntity request = new HttpEntity(unprocessedText, headers);
 		//ResponseEntity<AnalyzedText> response = restTemplate.exchange(watsonNLUAPIUrl, HttpMethod.POST, request, AnalyzedText.class);
-		AnalyzedText response2 = restTemplate.postForObject(watsonNLUAPIUrl, request, AnalyzedText.class);
-		return response2.toString();
+		//AnalyzedText response2 = restTemplate.postForObject(watsonNLUAPIUrl, request, AnalyzedText.class);
+		//return response2.toString();
+		return null;
 		
 	}
 
@@ -57,6 +68,10 @@ public class SbServiceImpl implements SbService{
 		return watsonUtil.analyzeMessage(unprocessedText, ibmAccountUserName, ibmAccountPassword);
 	}
 	
+	public String processContentRequest(ContentRequest contentRequest) {
+		return null;
+		
+	}
 	
 	private HttpHeaders createHeaders() {
 		String plainCreds = ibmAccountUserName + ":" + ibmAccountPassword;
@@ -67,6 +82,16 @@ public class SbServiceImpl implements SbService{
 		headers.add("Authorization", "Basic " + base64Creds);
 		return headers;
 	}
+
+
+	@Override
+	public String getCognitiveProfile(ContentRequest[] contentRequests) throws IOException, InterruptedException {
+		topicSubscriber.startListener();
+		
+		topicPublisher.publishContentRequests(contentRequests); 
+		return null;
+	}
+	
 	
 	
 	

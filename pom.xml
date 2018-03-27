@@ -30,12 +30,8 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-starter-tomcat</artifactId>
-				</exclusion>
-			</exclusions>
+			<!-- <exclusions> <exclusion> <groupId>org.springframework.boot</groupId> 
+				<artifactId>spring-boot-starter-tomcat</artifactId> </exclusion> </exclusions> -->
 		</dependency>
 
 		<dependency>
@@ -49,36 +45,79 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-gcp-starter-pubsub</artifactId> 
+			</dependency> -->
+		<!-- <dependency> <groupId>com.google.api</groupId> <artifactId>gax</artifactId> 
+			<version>1.20.0</version> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-core</artifactId>
 		</dependency>
+		<!-- <dependency> <groupId>com.google.cloud</groupId> <artifactId>google-cloud-pubsub</artifactId> 
+			<version>0.41.0-beta</version> <exclusions> <exclusion> <groupId>com.google.api.grpc</groupId> 
+			<artifactId>proto-google-cloud-pubsub-v1</artifactId> </exclusion> <exclusion> 
+			<groupId>com.google.api</groupId> <artifactId>gax</artifactId> </exclusion> 
+			</exclusions> </dependency> -->
+		<!-- <parent> <groupId>com.google.cloud.samples</groupId> <artifactId>shared-configuration</artifactId> 
+			<version>1.0.8</version> </parent> -->
+		<!-- <properties> <maven.compiler.target>1.8</maven.compiler.target> <maven.compiler.source>1.8</maven.compiler.source> 
+			</properties> -->
+
+
+		<!-- [START dependencies] -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-pubsub</artifactId>
+			<version>0.41.0-beta</version>
+		</dependency>
+		<!-- [END dependencies] -->
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.truth</groupId>
+			<artifactId>truth</artifactId>
+			<version>0.39</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>com.ibm.watson.developer_cloud</groupId>
 			<artifactId>java-sdk</artifactId>
 			<version>4.1.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+			<version>4.12</version> <scope>test</scope> </dependency> <dependency> <groupId>com.google.truth</groupId> 
+			<artifactId>truth</artifactId> <version>0.39</version> <scope>test</scope> 
+			</dependency> -->
+		<!-- <dependency> <groupId>com.google.api.grpc</groupId> <artifactId>proto-google-cloud-pubsub-v1</artifactId> 
+			<version>0.6.0</version> <scope>test</scope> </dependency> -->
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-gcp-dependencies</artifactId>
-				<version>${spring-cloud-gcp.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<!-- <dependencyManagement><dependencies> <dependency> <groupId>org.springframework.cloud</groupId> 
+		<artifactId>spring-cloud-gcp-dependencies</artifactId> <version>${spring-cloud-gcp.version}</version> 
+		<type>pom</type> <scope>import</scope> </dependency> </dependencies> </dependencyManagement> -->
 
 	<build>
 		<plugins>

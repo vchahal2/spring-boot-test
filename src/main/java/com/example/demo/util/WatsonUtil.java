@@ -2,8 +2,10 @@ package com.example.demo.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.pojo.ContentRequest;
 import com.example.demo.pojo.UnprocessedText;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
@@ -15,6 +17,18 @@ import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.Ke
 @Component
 public class WatsonUtil {
 
+	@Value("${watson.nlu.api.url}")
+	private String watsonNLUAPIUrl;
+	
+	/*@Value("${ibm.developer.account.user.name}")
+	private String ibmAccountUserName;
+	
+	
+	@Value("${ibm.developer.account.password}")
+	private String ibmAccountPassword;*/
+	
+	
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(WatsonUtil.class);
 
 	public String processMessage(String rawInput) {
@@ -52,6 +66,25 @@ public class WatsonUtil {
 		Features features = new Features.Builder().entities(entitiesOptions).keywords(keywordsOptions).build();
 
 		AnalyzeOptions parameters = new AnalyzeOptions.Builder().text(unprocessedText.getText()).features(features).build();
+
+		AnalysisResults response = service.analyze(parameters).execute();
+		return response.toString();
+	}
+	
+	public static String getTextMetadata(String flattenedContent, ContentRequest contentRequest, String ibmAccountUserName, String ibmAccountPassword) {
+		
+		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
+				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, ibmAccountUserName, ibmAccountPassword);
+
+		EntitiesOptions entitiesOptions = new EntitiesOptions.Builder().emotion(true).sentiment(true).
+				limit(Integer.parseInt(contentRequest.getEntitiesLimit())).build();
+
+		KeywordsOptions keywordsOptions = new KeywordsOptions.Builder().emotion(true).sentiment(true).
+				limit(Integer.parseInt(contentRequest.getCategoriesLimit())).build();
+
+		Features features = new Features.Builder().entities(entitiesOptions).keywords(keywordsOptions).build();
+
+		AnalyzeOptions parameters = new AnalyzeOptions.Builder().text(flattenedContent).features(features).build();
 
 		AnalysisResults response = service.analyze(parameters).execute();
 		return response.toString();

@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.example.demo.SbWebTestApplication.PubsubOutboundGateway;
+import com.example.demo.pojo.ContentRequest;
 import com.example.demo.pojo.UnprocessedText;
 import com.example.demo.service.SbService;
 
@@ -27,8 +29,6 @@ public class ApplicationController {
 	@Autowired
 	SbService sbService;
 
-	@Autowired
-	private PubsubOutboundGateway messagingGateway;
 
 	@GetMapping("/")
 	public String hello() {
@@ -37,7 +37,7 @@ public class ApplicationController {
 
 	@PostMapping("/publishMessage")
 	public ResponseEntity<String> publishMessage(@RequestParam("message") String message) {
-		messagingGateway.sendToPubsub(message);
+		//messagingGateway.sendToPubsub(message);
 		return new ResponseEntity<String>("Message Published and Consumed", HttpStatus.OK);
 	}
 
@@ -56,5 +56,17 @@ public class ApplicationController {
 
 		return new ResponseEntity<String>(processedText, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value = "/congnitiveProfile", method = RequestMethod.POST)
+	public ResponseEntity<String> createCognitiveProfile(@RequestBody ContentRequest[] contentRequests) throws IOException, InterruptedException {
+
+		String resposne = "We have received request and processing it";
+		System.out.println("Inside cognitiveProfile Method");
+		sbService.getCognitiveProfile(contentRequests);
+		//String res=  sbService;
+		return new ResponseEntity<String>(resposne, HttpStatus.OK);
+	}
+	
 
 }

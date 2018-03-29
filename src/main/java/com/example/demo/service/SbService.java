@@ -13,6 +13,6 @@ public interface SbService {
 	
 	public String processContentRequest(ContentRequest contentRequest);
 	
-	public String getCognitiveProfile(ContentRequest[] contentRequests) throws IOException, InterruptedException;
+	public String getCognitiveProfile(ContentRequest[] contentRequests) throws IOException, InterruptedException, Exception;
 	
 }

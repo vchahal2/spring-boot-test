@@ -17,7 +17,7 @@ import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 
 @Component
-public class TopicSubscriber {
+public class TestSubscriber {
 
 	@Autowired
 	CmsUtil cmsUtil;

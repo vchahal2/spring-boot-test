@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.pojo.ContentRequest;
+import com.example.demo.pojo.FlattenedContent;
 import com.example.demo.pojo.UnprocessedText;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
@@ -20,13 +21,30 @@ public class WatsonUtil {
 	@Value("${watson.nlu.api.url}")
 	private String watsonNLUAPIUrl;
 	
-	/*@Value("${ibm.developer.account.user.name}")
+	@Value("${ibm.developer.account.user.name}")
 	private String ibmAccountUserName;
 	
 	
 	@Value("${ibm.developer.account.password}")
-	private String ibmAccountPassword;*/
+	private String ibmAccountPassword;
 	
+	@Value("${entities.emotion.required}")
+	private String entitiesEmotionRequired;
+	
+	@Value("${entities.sentiment.required}")
+	private String entitiesSentimentRequired;
+	
+	@Value("${entities.limit}")
+	private String entitiesLimit;
+	
+	@Value("${keywords.emotion.required}")
+	private String keywordsEmotionRequired;
+	
+	@Value("${keywords.sentiment.required}")
+	private String keywordsSentimentRequired;
+	
+	@Value("${keywords.limit}")
+	private String keywordsLimit;
 	
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(WatsonUtil.class);
@@ -89,4 +107,24 @@ public class WatsonUtil {
 		AnalysisResults response = service.analyze(parameters).execute();
 		return response.toString();
 	}
+	
+	public String getCognitiveProfileForText(FlattenedContent flattenedContent) {
+		
+		NaturalLanguageUnderstanding service = new NaturalLanguageUnderstanding(
+				NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27, ibmAccountUserName, ibmAccountPassword);
+
+		EntitiesOptions entitiesOptions = new EntitiesOptions.Builder().emotion(new Boolean(entitiesEmotionRequired)).sentiment(new Boolean(entitiesSentimentRequired)).
+				limit(Integer.parseInt(entitiesLimit)).build();
+
+		KeywordsOptions keywordsOptions = new KeywordsOptions.Builder().emotion(new Boolean(keywordsEmotionRequired)).sentiment(new Boolean(keywordsSentimentRequired)).
+				limit(Integer.parseInt(keywordsLimit)).build();
+
+		Features features = new Features.Builder().entities(entitiesOptions).keywords(keywordsOptions).build();
+
+		AnalyzeOptions parameters = new AnalyzeOptions.Builder().text(flattenedContent.getBody()).features(features).build();
+
+		AnalysisResults response = service.analyze(parameters).execute();
+		return response.toString();
+	}
+	
 }

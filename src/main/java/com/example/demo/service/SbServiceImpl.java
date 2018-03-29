@@ -14,8 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.demo.messaging.ContentIdTopicPublisher;
+import com.example.demo.messaging.ContentIdTopicSubscriber;
+import com.example.demo.messaging.FilteredResponseTopicSubscriber;
+import com.example.demo.messaging.FlattenedContentTopicSubscriber;
+import com.example.demo.messaging.TestSubscriber;
 import com.example.demo.messaging.TopicPublisher;
 import com.example.demo.messaging.TopicSubscriber;
+import com.example.demo.messaging.UnfilteredResponseTopicSubscriber;
 import com.example.demo.pojo.AnalyzedText;
 import com.example.demo.pojo.ContentRequest;
 import com.example.demo.pojo.UnprocessedText;
@@ -32,8 +38,24 @@ public class SbServiceImpl implements SbService{
 	/*@Autowired
 	RestTemplate restTemplate;*/
 	
+	
 	@Autowired
 	TopicSubscriber topicSubscriber;
+	
+	@Autowired
+	ContentIdTopicPublisher contentIdTopicPublisher;
+	
+	@Autowired
+	ContentIdTopicSubscriber contentIdTopicSubscriber;
+	
+	@Autowired
+	FilteredResponseTopicSubscriber filteredResponseTopicSubscriber;
+	
+	@Autowired
+	UnfilteredResponseTopicSubscriber unfilteredResponseTopicSubscriber;
+	
+	@Autowired
+	FlattenedContentTopicSubscriber flattenedContentTopicSubscriber;
 	
 	@Autowired
 	TopicPublisher topicPublisher;
@@ -85,10 +107,18 @@ public class SbServiceImpl implements SbService{
 
 
 	@Override
-	public String getCognitiveProfile(ContentRequest[] contentRequests) throws IOException, InterruptedException {
-		topicSubscriber.startListener();
+	public String getCognitiveProfile(ContentRequest[] contentRequests) throws Exception {
 		
-		topicPublisher.publishContentRequests(contentRequests); 
+		//topicSubscriber.startListener();
+		contentIdTopicSubscriber.startListener();
+		flattenedContentTopicSubscriber.startListener();
+		unfilteredResponseTopicSubscriber.startListener();
+		filteredResponseTopicSubscriber.startListener();
+
+
+		
+		contentIdTopicPublisher.publishContentRequests(contentRequests);
+		//topicPublisher.publishContentRequests(contentRequests); 
 		return null;
 	}
 	

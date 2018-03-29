@@ -1,6 +1,10 @@
 package com.example.demo.pojo;
 
-public class ContentRequest {
+import java.io.Serializable;
+
+public class ContentRequest implements Serializable {
+
+	private static final long serialVersionUID = -3419819928919421780L;
 
 	private String cmsFlattenedContentUrl;
 

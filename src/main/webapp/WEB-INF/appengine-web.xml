@@ -4,6 +4,9 @@
   <version>1</version>
   <threadsafe>true</threadsafe>
   <runtime>java8</runtime>
+  <system-properties>
+  	<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"></property>
+  </system-properties>
    <basic-scaling>
     <max-instances>11</max-instances>
     <idle-timeout>10m</idle-timeout>

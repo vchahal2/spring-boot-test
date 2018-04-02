@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.example</groupId>
-	<artifactId>sb-web-test</artifactId>
+	<artifactId>api-engine-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>sb-web-test</name>
-	<description>Demo project for Spring Boot</description>
+	<name>api-engine-test</name>
+	<description>API Engine Project based on Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
